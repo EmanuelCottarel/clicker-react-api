@@ -3,6 +3,11 @@
 namespace App\Dto;
 
 class UserDataDto {
-    public function __construct(public string $username,public string $age){
+    public function __construct(
+        public string $username,
+        public float $money, 
+        public float $clicIncome, 
+        public \DateTimeImmutable $lastConnection,
+        ){
     }
 }

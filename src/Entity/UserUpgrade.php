@@ -15,7 +15,7 @@ class UserUpgrade
 
     #[ORM\ManyToOne(inversedBy: 'userUpgrades')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Users $idUser = null;
+    private ?User $idUser = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -26,12 +26,12 @@ class UserUpgrade
         return $this->id;
     }
 
-    public function getIdUser(): ?Users
+    public function getIdUser(): ?User
     {
         return $this->idUser;
     }
 
-    public function setIdUser(?Users $idUser): static
+    public function setIdUser(?User $idUser): static
     {
         $this->idUser = $idUser;
 

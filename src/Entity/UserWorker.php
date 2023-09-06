@@ -25,7 +25,7 @@ class UserWorker
 
     #[ORM\ManyToOne(inversedBy: 'userWorkers')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Users $idUser = null;
+    private ?User $idUser = null;
 
     public function getId(): ?int
     {
@@ -68,12 +68,12 @@ class UserWorker
         return $this;
     }
 
-    public function getIdUser(): ?Users
+    public function getIdUser(): ?User
     {
         return $this->idUser;
     }
 
-    public function setIdUser(?Users $idUser): static
+    public function setIdUser(?User $idUser): static
     {
         $this->idUser = $idUser;
 
