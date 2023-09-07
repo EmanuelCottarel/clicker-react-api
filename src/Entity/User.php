@@ -21,9 +21,9 @@ use App\State\UserDataProvider;
 #[ApiResource(
     operations: [
         // Route to get all necessaries user datas 
-        new Get(output : UserDataDto::class, provider : UserDataProvider::class),
-        new Post(),
-        new Patch(),
+        new Get(uriTemplate: '/user/data', output : UserDataDto::class, provider : UserDataProvider::class),
+        new Post(uriTemplate: '/register'),
+        new Patch(uriTemplate: '/user/money', ),
         new Delete(),
         ]
 )]
@@ -63,6 +63,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
+        $this->setMoney();
+        $this->setClicIncome();
+        $this->setLastConnection();
+        $this->setRoles();
         $this->userWorkers = new ArrayCollection();
         $this->userUpgrades = new ArrayCollection();
     }
@@ -106,7 +110,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): static
+    public function setRoles(array $roles = []): static
     {
         $this->roles = $roles;
 
@@ -142,7 +146,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->money;
     }
 
-    public function setMoney(float $money): static
+    public function setMoney(float $money = 0): static
     {
         $this->money = $money;
 
@@ -154,7 +158,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->clicIncome;
     }
 
-    public function setClicIncome(float $clicIncome): static
+    public function setClicIncome(float $clicIncome = 1): static
     {
         $this->clicIncome = $clicIncome;
 
@@ -166,9 +170,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->lastConnection;
     }
 
-    public function setLastConnection(\DateTimeImmutable $lastConnection): static
+    public function setLastConnection(): static
     {
-        $this->lastConnection = $lastConnection;
+        $this->lastConnection = new \DateTimeImmutable();
 
         return $this;
     }
