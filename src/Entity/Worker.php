@@ -6,8 +6,10 @@ use App\Repository\WorkerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: WorkerRepository::class)]
+#[ApiResource()]
 class Worker
 {
     #[ORM\Id]
@@ -28,12 +30,12 @@ class Worker
     #[ORM\JoinColumn(nullable: false)]
     private ?WorkerType $idWorkerType = null;
 
-    #[ORM\ManyToMany(targetEntity: Effect::class, mappedBy: 'idWorker')]
-    private Collection $effects;
+    #[ORM\ManyToMany(targetEntity: Upgrade::class, mappedBy: 'affectWorker')]
+    private Collection $upgrades;
 
     public function __construct()
     {
-        $this->effects = new ArrayCollection();
+        $this->upgrades = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -90,27 +92,27 @@ class Worker
     }
 
     /**
-     * @return Collection<int, Effect>
+     * @return Collection<int, Upgrade>
      */
-    public function getEffects(): Collection
+    public function getUpgrades(): Collection
     {
-        return $this->effects;
+        return $this->upgrades;
     }
 
-    public function addEffect(Effect $effect): static
+    public function addUpgrade(Upgrade $upgrade): static
     {
-        if (!$this->effects->contains($effect)) {
-            $this->effects->add($effect);
-            $effect->addIdWorker($this);
+        if (!$this->upgrades->contains($upgrade)) {
+            $this->upgrades->add($upgrade);
+            $upgrade->addAffectWorker($this);
         }
 
         return $this;
     }
 
-    public function removeEffect(Effect $effect): static
+    public function removeUpgrade(Upgrade $upgrade): static
     {
-        if ($this->effects->removeElement($effect)) {
-            $effect->removeIdWorker($this);
+        if ($this->upgrades->removeElement($upgrade)) {
+            $upgrade->removeAffectWorker($this);
         }
 
         return $this;

@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\EffectRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: EffectRepository::class)]
+#[ApiResource()]
 class Effect
 {
     #[ORM\Id]
@@ -25,12 +25,8 @@ class Effect
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Worker::class, inversedBy: 'effects')]
-    private Collection $idWorker;
-
     public function __construct()
     {
-        $this->idWorker = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,30 +66,6 @@ class Effect
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Worker>
-     */
-    public function getIdWorker(): Collection
-    {
-        return $this->idWorker;
-    }
-
-    public function addIdWorker(Worker $idWorker): static
-    {
-        if (!$this->idWorker->contains($idWorker)) {
-            $this->idWorker->add($idWorker);
-        }
-
-        return $this;
-    }
-
-    public function removeIdWorker(Worker $idWorker): static
-    {
-        $this->idWorker->removeElement($idWorker);
 
         return $this;
     }

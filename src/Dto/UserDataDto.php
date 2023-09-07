@@ -8,6 +8,8 @@ class UserDataDto {
         public float $money, 
         public float $clicIncome, 
         public \DateTimeImmutable $lastConnection,
+        public $userworkers,
+        public $userupgrades,
         ){
     }
 }

@@ -2,11 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UpgradeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UpgradeRepository::class)]
+#[ApiResource()]
 class Upgrade
 {
     #[ORM\Id]
@@ -26,6 +30,14 @@ class Upgrade
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Effect $idEffect = null;
+
+    #[ORM\ManyToMany(targetEntity: Worker::class, inversedBy: 'upgrades')]
+    private Collection $affectWorker;
+
+    public function __construct()
+    {
+        $this->affectWorker = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -76,6 +88,30 @@ class Upgrade
     public function setIdEffect(?Effect $idEffect): static
     {
         $this->idEffect = $idEffect;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Worker>
+     */
+    public function getAffectWorker(): Collection
+    {
+        return $this->affectWorker;
+    }
+
+    public function addAffectWorker(Worker $affectWorker): static
+    {
+        if (!$this->affectWorker->contains($affectWorker)) {
+            $this->affectWorker->add($affectWorker);
+        }
+
+        return $this;
+    }
+
+    public function removeAffectWorker(Worker $affectWorker): static
+    {
+        $this->affectWorker->removeElement($affectWorker);
 
         return $this;
     }

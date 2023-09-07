@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\UserWorkerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: UserWorkerRepository::class)]
+#[ApiResource()]
 class UserWorker
 {
     #[ORM\Id]

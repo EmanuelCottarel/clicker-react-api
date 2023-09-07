@@ -6,8 +6,6 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use App\Dto\UserDataDto;
-use App\State\UserDataProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Metadata\ApiResource;
@@ -15,13 +13,15 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Dto\UserDataDto;
+use App\State\UserDataProvider;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
     operations: [
-        new Get(),
         // Route to get all necessaries user datas 
-        new Get(uriTemplate: '/user/data', output : UserDataDto::class, provider : UserDataProvider::class),
+        new Get(output : UserDataDto::class, provider : UserDataProvider::class),
         new Post(),
         new Patch(),
         new Delete(),

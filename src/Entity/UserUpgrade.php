@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\UserUpgradeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: UserUpgradeRepository::class)]
+#[ApiResource()]
 class UserUpgrade
 {
     #[ORM\Id]
