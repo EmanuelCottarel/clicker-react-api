@@ -23,8 +23,7 @@ use App\State\UserDataProvider;
         // Route to get all necessaries user datas 
         new Get(uriTemplate: '/user/data', output : UserDataDto::class, provider : UserDataProvider::class),
         new Post(uriTemplate: '/register'),
-        new Patch(uriTemplate: '/user/money', ),
-        new Delete(),
+        new Patch(),
         ]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface

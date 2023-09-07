@@ -33,19 +33,14 @@
 - userupgrades?
 -> update one or more data in DB -->
 
-## /api/user/money
-1. [ ] **PATCH**
-- money
--> update user.money
-
-## /api/user/clic
-1. [ ] **PATCH**
-- clicIncome
--> update user.clicIncome
-
 ## /api/users/{id}
-1. [ ] **DELETE**
--> delete user
+<!-- 1. [ ] **DELETE**
+-> delete user -->
+
+2. [x] **PATCH**
+- money?
+- clicIncome?
+-> update user.money or user.clicIncome
 
 ## /api/user/workers
 1. [ ] **POST**
