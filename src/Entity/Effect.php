@@ -5,9 +5,16 @@ namespace App\Entity;
 use App\Repository\EffectRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
 
 #[ORM\Entity(repositoryClass: EffectRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get()
+    ]
+)]
 class Effect
 {
     #[ORM\Id]

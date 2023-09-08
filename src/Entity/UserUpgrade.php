@@ -5,9 +5,14 @@ namespace App\Entity;
 use App\Repository\UserUpgradeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
 
 #[ORM\Entity(repositoryClass: UserUpgradeRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    operations: [
+        new Post(uriTemplate: '/user/upgrades'),
+        ]
+)]
 class UserUpgrade
 {
     #[ORM\Id]

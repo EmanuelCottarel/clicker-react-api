@@ -3,14 +3,23 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
+use App\Dto\UpgradeDataDto;
 use App\Repository\UpgradeRepository;
+use App\State\UpgradeDataProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UpgradeRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(output : UpgradeDataDto::class, provider : UpgradeDataProvider::class)
+    ]
+)]
 class Upgrade
 {
     #[ORM\Id]

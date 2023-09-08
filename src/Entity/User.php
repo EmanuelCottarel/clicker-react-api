@@ -9,16 +9,20 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Dto\UserDataDto;
 use App\State\UserDataProvider;
+use App\Controller\ResetDataController;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
     operations: [
+        new Get(),
+        new Get(uriTemplate: '/user/reset', controller: ResetDataController::class),
         new Get(uriTemplate: '/user/data', output : UserDataDto::class, provider : UserDataProvider::class),
         new Post(uriTemplate: '/register'),
         new Patch(),
@@ -124,6 +128,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setPassword(string $password): static
     {
+        // TODO : hash password
         $this->password = $password;
 
         return $this;

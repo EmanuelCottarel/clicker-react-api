@@ -5,9 +5,18 @@ namespace App\Entity;
 use App\Repository\UserWorkerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use App\Dto\UserWorkerPatchDto;
 
 #[ORM\Entity(repositoryClass: UserWorkerRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    operations: [
+    new Post(uriTemplate: '/user/workers'),
+    new Patch(uriTemplate: '/user/workers/{id}')//, input: UserWorkerPatchDto::class)
+    ]
+)]
 class UserWorker
 {
     #[ORM\Id]

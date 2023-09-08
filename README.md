@@ -24,59 +24,49 @@
 - userworkers
 - userupgrades
 
-<!-- 2. [ ] **PATCH**
-- username?
-- money?
-- clicIncome?
-- lastConnection?
-- userworkers? (foreach)
-- userupgrades?
--> update one or more data in DB -->
+## /api/user/reset
+1. [x] **GET**
+-> reset all user related data
+
 
 ## /api/users/{id}
 <!-- 1. [ ] **DELETE**
--> delete user -->
+-> delete user only if admin routes -->
 
 2. [x] **PATCH**
 - money?
 - clicIncome?
--> update user.money or user.clicIncome
+- lastConnection?
+-> update user.money, user.clicIncome, user.lastConnection
 
 ## /api/user/workers
-1. [ ] **POST**
+1. [x] **POST**
 - quantity
 - calculatedIncome
 - idWorker
 - idUser
 -> create a new userWorker
 
-2. [ ] **DELETE**
-- idUser
--> delete all userWorkers related to this user (useFull if ascension)
-
 ## /api/user/workers/{id}
-1. [ ] **PATCH**
+1. [x] **PATCH**
 - quantity?
 - calculatedIncome?
 -> update given value(s) i for targeted userWorker
+-> might be better with a dto but need a processor in this case 
 
 ## /api/user/upgrades
-1. [ ] **POST**
-- idUser
-- idUpgrade
+1. [x] **POST**
+- idUser <!-- : "/api/users/1" -->
+- idUpgrade <!-- : "/api/upgrades/1" -->
 -> create new userUpgrade
 
-2. [ ] **DELETE**
-- idUser
--> delete all userUpgrades related to this user (useFull if ascension)
-
 ## /api/workers
-1. [ ] **GET**
+1. [x] **GET**
 -> return an array of all workers
 - workers
 
 ## /api/workers/{id}
-1. [ ] **GET**
+1. [x] **GET**
 -> return all the data of one worker
 - name
 - basePrice
@@ -85,12 +75,12 @@
 - upgrades
 
 ## /api/upgrades
-1. [ ] **GET**
+1. [x] **GET**
 -> return an array of all upgrades
 - upgrades
 
 ## /api/upgrades/{id}
-1. [ ] **GET**
+1. [x] **GET**
 -> return all data of one upgrade
 - upgradeName
 - price
