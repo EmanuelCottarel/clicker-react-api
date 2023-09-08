@@ -9,13 +9,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Dto\UserDataDto;
 use App\State\UserDataProvider;
 use App\Controller\ResetDataController;
+use App\State\Processor\UserHashPasswordProcessor;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -24,7 +25,7 @@ use App\Controller\ResetDataController;
         new Get(),
         new Get(uriTemplate: '/user/reset', controller: ResetDataController::class),
         new Get(uriTemplate: '/user/data', output : UserDataDto::class, provider : UserDataProvider::class),
-        new Post(uriTemplate: '/register'),
+        new Post(uriTemplate: '/register', processor: UserHashPasswordProcessor::class),
         new Patch(),
         ]
 )]
@@ -36,6 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank]
     private ?string $username = null;
 
     #[ORM\Column]
@@ -60,7 +62,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
     private ?string $password = null;
+
+    private ?string $plainPassword = null;
 
     public function __construct()
     {
@@ -140,7 +145,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function getMoney(): ?float
@@ -175,6 +180,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastConnection(): static
     {
         $this->lastConnection = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }
