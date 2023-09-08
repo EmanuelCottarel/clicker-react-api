@@ -9,7 +9,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
@@ -20,7 +19,6 @@ use App\State\UserDataProvider;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
     operations: [
-        // Route to get all necessaries user datas 
         new Get(uriTemplate: '/user/data', output : UserDataDto::class, provider : UserDataProvider::class),
         new Post(uriTemplate: '/register'),
         new Patch(),
