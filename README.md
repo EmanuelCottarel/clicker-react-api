@@ -8,7 +8,7 @@
 ## /api/register
 1. [x] **POST**
 - username
-- password
+- plainPassword
 -> create user
 
 ## /api/login_check
