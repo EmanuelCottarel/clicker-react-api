@@ -15,7 +15,7 @@ use ApiPlatform\Metadata\Post;
 use App\Dto\UserDataDto;
 use App\State\UserDataProvider;
 use App\Controller\ResetDataController;
-use App\State\Processor\UserHashPasswordProcessor;
+use App\State\UserHashPasswordProcessor;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(uriTemplate: '/user/reset', controller: ResetDataController::class),
         new Get(uriTemplate: '/user/data', output : UserDataDto::class, provider : UserDataProvider::class),
         new Post(uriTemplate: '/register', processor: UserHashPasswordProcessor::class),
-        new Patch(),
+        new Patch(processor: UserHashPasswordProcessor::class),
         ]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -62,9 +62,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Assert\NotBlank]
     private ?string $password = null;
 
+    #[Assert\NotBlank]
     private ?string $plainPassword = null;
 
     public function __construct()
