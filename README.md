@@ -1,4 +1,7 @@
 # BackSymfony
+
+## To load fixtures
+- symfony console d:f:l
 ---
 # EndPoints API
 ---
@@ -54,10 +57,8 @@
 -> update given value(s) i for targeted userWorker
 -> might be better with a dto but need a processor in this case 
 
-## /api/user/upgrades
-1. [x] **POST**
-- idUser <!-- : "/api/users/1" -->
-- idUpgrade <!-- : "/api/upgrades/1" -->
+## /user/addupgrades/{id}
+1. [x] **Get**
 -> create new userUpgrade
 
 ## /api/workers
@@ -80,6 +81,10 @@
 - upgrades
 
 ## /api/upgrades/{id}
+1. [x] **GET**
+-> return an upgrade
+
+## /api/upgrade/{id}
 1. [x] **GET**
 -> return all data of one upgrade
 - upgradeName

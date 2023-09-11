@@ -39,6 +39,7 @@ class AppFixtures extends Fixture
 	private function loadUsers(ObjectManager $manager)
 	{
 		$admin = new User();
+		// Password = admin
 		$admin->setUsername("admin")->setPassword('$2y$13$LXGYRqV/oH0.Mr5LPy4rDOiKEdwUtaaFBtaIZnCcSZatgkpQE3AH.');
 		$manager->persist($admin);
 
@@ -51,20 +52,20 @@ class AppFixtures extends Fixture
 		$workerType = new WorkerType();
 		$workerType->setType("clic");
 		$manager->persist($workerType);
-
+		
 		$workerType = new WorkerType();
-		$workerType->setType('idle');
+		$workerType->setType('worker');
+		
 		$manager->persist($workerType);
-
 		$manager->flush();
 		$manager->clear();
 
 		$worker = new Worker();
-		$worker->setBaseIncome(1)->setBasePrice(50)->setName("Carapuce")->setIdWorkerType($this->workerTypeRepository->findOneBy(['type'=>'idle']));
+		$worker->setBaseIncome(1)->setBasePrice(50)->setName("Carapuce")->setIdWorkerType($this->workerTypeRepository->findOneBy(['type'=>'worker']));
 		$manager->persist($worker);
 
 		$worker = new Worker();
-		$worker->setBaseIncome(0.5)->setBasePrice(25)->setName("Salameche")->setIdWorkerType($this->workerTypeRepository->findOneBy(['type'=>'idle']));
+		$worker->setBaseIncome(0.5)->setBasePrice(25)->setName("Salameche")->setIdWorkerType($this->workerTypeRepository->findOneBy(['type'=>'worker']));
 		$manager->persist($worker);
 
 		$manager->flush();

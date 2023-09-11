@@ -18,9 +18,9 @@ class ResetDataController extends AbstractController
         foreach ($userWorker as $worker) {
             $user->removeUserWorker($worker);
         }
-        $userUpgrade = $user->getUserUpgrades();
+        $userUpgrade = $user->getUpgrades();
         foreach ($userUpgrade as $upgrade) {
-            $user->removeUserUpgrade($upgrade);
+            $user->removeUpgrade($upgrade);
         }
         $userRepository->save($user, true);
 

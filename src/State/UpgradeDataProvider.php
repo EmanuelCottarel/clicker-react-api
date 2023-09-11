@@ -5,17 +5,11 @@ namespace App\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Dto\UpgradeDataDto;
-use App\Dto\UserDataDto;
-use App\Repository\EffectRepository;
-use App\Repository\EffectTypeRepository;
 use App\Repository\UpgradeRepository;
-use App\Repository\UserRepository;
-use App\Repository\WorkerRepository;
-use Symfony\Bundle\SecurityBundle\Security;
 
 class UpgradeDataProvider implements ProviderInterface
 {
-	public function __construct(private WorkerRepository $workerRepository, private UpgradeRepository $upgradeRepository, private EffectRepository $effectRepository, private EffectTypeRepository $effectTypeRepository) {
+	public function __construct(private UpgradeRepository $upgradeRepository) {
 	}
 	public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
 	{
@@ -23,10 +17,10 @@ class UpgradeDataProvider implements ProviderInterface
 		$upgradeName = $upgrade->getUpgradeName();
 		$price=$upgrade->getPrice();
 		$upgradeDesc=$upgrade->getUpgradeDesc();
-		$effect=$this->effectRepository->find($upgrade->getIdEffect()->getId());
+		$effect=$upgrade->getIdEffect();
 		$effectIndice = $effect->getIndice();
 		$effectName = $effect->getName();
-		$effectType = $this->effectTypeRepository->find($effect->getIdEffectType()->getId())->getType();
+		$effectType = $effect->getIdEffectType()->getType();
 		$affectWorker = $upgrade->getAffectWorker();
 		
 		return new UpgradeDataDto(

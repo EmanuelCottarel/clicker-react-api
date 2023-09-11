@@ -21,7 +21,7 @@ class UserDataProvider implements ProviderInterface
         $clicIncome = $user->getMoney();
         $lastConnection = $user->getLastConnection();
         $userworkers = $user->getUserWorkers();
-        $userupgrades = $user->getUserUpgrades();
+        $userupgrades = $user->getUpgrades();
         
         return new UserDataDto(username : $username, money : $money, clicIncome : $clicIncome, lastConnection: $lastConnection, userworkers : $userworkers, userupgrades : $userupgrades);
     }

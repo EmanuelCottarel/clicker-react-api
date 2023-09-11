@@ -15,6 +15,7 @@ use ApiPlatform\Metadata\Post;
 use App\Dto\UserDataDto;
 use App\State\UserDataProvider;
 use App\Controller\ResetDataController;
+use App\State\OnUpgradeBuyProcessor;
 use App\State\UserHashPasswordProcessor;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -49,11 +50,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?\DateTimeImmutable $lastConnection = null;
 
-    #[ORM\OneToMany(mappedBy: 'idUser', targetEntity: UserWorker::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'idUser', targetEntity: UserWorker::class, orphanRemoval: true, cascade: ["persist"])]
     private Collection $userWorkers;
 
-    #[ORM\OneToMany(mappedBy: 'idUser', targetEntity: UserUpgrade::class, orphanRemoval: true)]
-    private Collection $userUpgrades;
 
     #[ORM\Column]
     private array $roles = [];
@@ -67,6 +66,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank]
     private ?string $plainPassword = null;
 
+    #[ORM\ManyToMany(targetEntity: Upgrade::class, inversedBy: 'users')]
+    private Collection $upgrades;
+
     public function __construct()
     {
         $this->setMoney();
@@ -74,7 +76,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->setLastConnection();
         $this->setRoles();
         $this->userWorkers = new ArrayCollection();
-        $this->userUpgrades = new ArrayCollection();
+        $this->upgrades = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -227,31 +229,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, UserUpgrade>
+     * @return Collection<int, Upgrade>
      */
-    public function getUserUpgrades(): Collection
+    public function getUpgrades(): Collection
     {
-        return $this->userUpgrades;
+        return $this->upgrades;
     }
 
-    public function addUserUpgrade(UserUpgrade $userUpgrade): static
+    public function addUpgrade(Upgrade $upgrade): static
     {
-        if (!$this->userUpgrades->contains($userUpgrade)) {
-            $this->userUpgrades->add($userUpgrade);
-            $userUpgrade->setIdUser($this);
+        if (!$this->upgrades->contains($upgrade)) {
+            $this->upgrades->add($upgrade);
         }
 
         return $this;
     }
 
-    public function removeUserUpgrade(UserUpgrade $userUpgrade): static
+    public function removeUpgrade(Upgrade $upgrade): static
     {
-        if ($this->userUpgrades->removeElement($userUpgrade)) {
-            // set the owning side to null (unless already changed)
-            if ($userUpgrade->getIdUser() === $this) {
-                $userUpgrade->setIdUser(null);
-            }
-        }
+        $this->upgrades->removeElement($upgrade);
 
         return $this;
     }

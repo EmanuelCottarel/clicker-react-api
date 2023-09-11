@@ -25,7 +25,7 @@ class Effect
     #[ORM\Column]
     private ?float $indice = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ["persist"])]
     #[ORM\JoinColumn(nullable: false)]
     private ?EffectType $idEffectType = null;
 
