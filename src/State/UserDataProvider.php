@@ -10,19 +10,38 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 class UserDataProvider implements ProviderInterface
 {
-    public function __construct(private UserRepository $userRepository, private Security $security,) {
+    public function __construct(private UserRepository $userRepository, private Security $security,)
+    {
     }
+
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
         $user = $this->security->getUser();
         $user = $this->userRepository->find($user);
         $username = $user->getUserName();
-        $money= $user->getMoney();
+        $money = $user->getMoney();
         $clicIncome = $user->getClicIncome();
         $lastConnection = $user->getLastConnection();
-        $userworkers = $user->getUserWorkers();
         $userupgrades = $user->getUpgrades();
-        
-        return new UserDataDto(username : $username, money : $money, clicIncome : $clicIncome, lastConnection: $lastConnection, userworkers : $userworkers, userupgrades : $userupgrades);
+
+        $userworkers = $user->getUserWorkers();
+        $formattedUserWorker = [];
+        foreach ($userworkers as $userworker) {
+            $formattedUserWorker[] = [
+                "id" => $userworker->getId(),
+                "name" => $userworker->getWorker()->getName(),
+                "quantity" => $userworker->getQuantity(),
+                "calculatedIncome" => $userworker->getCalculatedIncome()
+            ];
+        }
+
+        return new UserDataDto(
+            id: $user->getId(),
+            username: $username,
+            money: $money,
+            clicIncome: $clicIncome,
+            lastConnection: $lastConnection,
+            userWorkers: $formattedUserWorker
+        );
     }
 }

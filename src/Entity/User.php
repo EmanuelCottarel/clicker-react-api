@@ -2,21 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Dto\UserDataDto;
-use App\State\UserDataProvider;
 use App\Controller\ResetDataController;
-use App\State\OnUpgradeBuyProcessor;
+use App\Dto\UserDataDto;
+use App\Repository\UserRepository;
+use App\State\UserDataProvider;
 use App\State\UserHashPasswordProcessor;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -24,11 +23,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     operations: [
         new Get(),
-        new Get(uriTemplate: '/user/reset', controller: ResetDataController::class),
-        new Get(uriTemplate: '/user/data', output : UserDataDto::class, provider : UserDataProvider::class),
-        new Post(uriTemplate: '/register', processor: UserHashPasswordProcessor::class),
-        new Patch(processor: UserHashPasswordProcessor::class),
-        ]
+        new Get(
+            uriTemplate: '/user/reset',
+            controller: ResetDataController::class),
+        new Get(
+            uriTemplate: '/user/data',
+            output: UserDataDto::class,
+            provider: UserDataProvider::class),
+        new Post(
+            uriTemplate: '/register',
+            processor: UserHashPasswordProcessor::class),
+        new Patch(
+            processor: UserHashPasswordProcessor::class),
+    ]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -50,20 +57,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?\DateTimeImmutable $lastConnection = null;
 
-    #[ORM\OneToMany(mappedBy: 'idUser', targetEntity: UserWorker::class, orphanRemoval: true, cascade: ["persist"])]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserWorker::class, cascade: ["persist"], orphanRemoval: true)]
     private Collection $userWorkers;
 
 
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
-    #[Assert\NotBlank]
     private ?string $plainPassword = null;
 
     #[ORM\ManyToMany(targetEntity: Upgrade::class, inversedBy: 'users')]
@@ -103,7 +106,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return (string)$this->username;
     }
 
     /**

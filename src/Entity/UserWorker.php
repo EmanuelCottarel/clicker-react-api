@@ -32,11 +32,11 @@ class UserWorker
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Worker $idWorker = null;
+    private ?Worker $worker = null;
 
     #[ORM\ManyToOne(inversedBy: 'userWorkers')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $idUser = null;
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -67,26 +67,26 @@ class UserWorker
         return $this;
     }
 
-    public function getIdWorker(): ?Worker
+    public function getWorker(): ?Worker
     {
-        return $this->idWorker;
+        return $this->worker;
     }
 
-    public function setIdWorker(?Worker $idWorker): static
+    public function setWorker(?Worker $worker): static
     {
-        $this->idWorker = $idWorker;
+        $this->worker = $worker;
 
         return $this;
     }
 
-    public function getIdUser(): ?User
+    public function getUser(): ?User
     {
-        return $this->idUser;
+        return $this->user;
     }
 
-    public function setIdUser(?User $idUser): static
+    public function setUser(?User $user): static
     {
-        $this->idUser = $idUser;
+        $this->user = $user;
 
         return $this;
     }

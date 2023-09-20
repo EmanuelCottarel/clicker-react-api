@@ -33,7 +33,7 @@ class Worker
     #[ORM\Column]
     private ?float $baseIncome = null;
 
-    #[ORM\ManyToOne(inversedBy: 'workers', cascade: ["persist"])]
+    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'workers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?WorkerType $idWorkerType = null;
 

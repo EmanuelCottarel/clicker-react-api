@@ -75,7 +75,11 @@ class AppFixtures extends Fixture
 	private function loadUserWorkers(ObjectManager $manager)
 	{
 		$userWorker = new UserWorker();
-		$userWorker->setCalculatedIncome(0.5)->setQuantity(4)->setIdUser($this->userRepository->findOneBy(["username" => "admin"]))->setIdWorker($this->workerRepository->findOneBy(["name" => "Salameche"]));
+		$userWorker
+            ->setCalculatedIncome(0.5)
+            ->setQuantity(4)
+            ->setUser($this->userRepository->findOneBy(["username" => "admin"]))
+            ->setWorker($this->workerRepository->findOneBy(["name" => "Salameche"]));
 		$manager->persist($userWorker);
 
 		$manager->flush();
